@@ -49,7 +49,7 @@ public class CustomDeserialization {
         }
         Object array = null;
         for (int index = 0; index < arrLen; index++) {
-            if (start>endLimit){
+            if (start > endLimit) {
                 break;
             }
             end = serObject.indexOf("\"", start);
@@ -59,15 +59,11 @@ public class CustomDeserialization {
                     array = Array.newInstance(field.getType().componentType(), arrLen);
                 }
                 setValueInArray(array, field, value, serObject, index);
-                if (index == arrLen - 1) {
-                    if (field.isAnnotationPresent(Save.class)) {
-                        field.set(obj, field.getType().cast(array));
-                    }
+                if (index == arrLen - 1 && field.isAnnotationPresent(Save.class)) {
+                    field.set(obj, field.getType().cast(array));
                 }
-            } else {
-                if (field.isAnnotationPresent(Save.class)) {
-                    setValue(obj, field, value, serObject);
-                }
+            } else if (field.isAnnotationPresent(Save.class)) {
+                setValue(obj, field, value, serObject);
             }
             start = end + 4;
         }

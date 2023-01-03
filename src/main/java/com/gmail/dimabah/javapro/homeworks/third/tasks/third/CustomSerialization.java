@@ -75,32 +75,36 @@ public class CustomSerialization {
                     sb.append(field.get(obj));
                 }
             }
-            default -> {
-                sb.append("{");
-                Object object = field.getType().isArray() && field.get(obj)!=null
-                        ? Array.get(field.get(obj), index)
-                        : field.get(obj);
-                if (object == null) {
-                    Constructor<?> constructor;
-                    if (field.getType().isArray()) {
-                        constructor = field.getType().componentType().getConstructor();
-                    }else{
-                       constructor = field.getType().getConstructor();
-                    }
-                    object = constructor.newInstance();
-                }
-                    for (var f : object.getClass().getDeclaredFields()) {
-                        if (!checkNested||(f.isAnnotationPresent(Save.class))) {
-                            f.trySetAccessible();
-                            getFieldInfo(f, object, sb, checkNested);
-                        }
-                    }
-
-                    if (sb.charAt(sb.length()-1)!='{'){
-                        sb.delete(sb.length() - 2, sb.length());
-                    }
-                sb.append("}");
-            }
+            default -> getFieldValueInObjects (field,obj,index,sb,checkNested);
         }
     }
+    private void getFieldValueInObjects(Field field, Object obj, int index,
+                               StringBuilder sb, boolean checkNested) throws IllegalAccessException,
+            NoSuchMethodException, InvocationTargetException, InstantiationException {
+        sb.append("{");
+        Object object = field.getType().isArray() && field.get(obj)!=null
+                ? Array.get(field.get(obj), index)
+                : field.get(obj);
+        if (object == null) {
+            Constructor<?> constructor;
+            if (field.getType().isArray()) {
+                constructor = field.getType().componentType().getConstructor();
+            }else{
+                constructor = field.getType().getConstructor();
+            }
+            object = constructor.newInstance();
+        }
+        for (var f : object.getClass().getDeclaredFields()) {
+            if (!checkNested||(f.isAnnotationPresent(Save.class))) {
+                f.trySetAccessible();
+                getFieldInfo(f, object, sb, checkNested);
+            }
+        }
+
+        if (sb.charAt(sb.length()-1)!='{'){
+            sb.delete(sb.length() - 2, sb.length());
+        }
+        sb.append("}");
+    }
+
 }
