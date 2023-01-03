@@ -2,7 +2,6 @@ package com.gmail.dimabah.javapro.homeworks.third.tasks.third;
 
 import java.io.*;
 import java.lang.reflect.*;
-import java.util.Scanner;
 
 public class Main {
 
@@ -26,7 +25,7 @@ public class Main {
             System.out.println("Object before change: ");
             System.out.println(person2);
             CustomDeserialization customDeserialization = new CustomDeserialization();
-            customDeserialization.changeObject(person2,readFromFile("object.ser",serObject));
+            customDeserialization.changeObject(person2,readFromFile("object.ser"));
             System.out.println();
             System.out.println("Object after change: ");
             System.out.println(person2);
@@ -42,7 +41,7 @@ public class Main {
             e.printStackTrace();
         }
     }
-    private static String readFromFile(String fileName, String text){
+    private static String readFromFile(String fileName){
         StringBuilder sb = new StringBuilder();
         try(BufferedReader fileIn = new BufferedReader(new FileReader(fileName))){
             String line;
