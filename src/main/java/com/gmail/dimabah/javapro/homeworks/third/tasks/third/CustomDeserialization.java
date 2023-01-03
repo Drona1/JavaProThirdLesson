@@ -60,10 +60,14 @@ public class CustomDeserialization {
                 }
                 setValueInArray(array, field, value, serObject, index);
                 if (index == arrLen - 1) {
-                    field.set(obj, field.getType().cast(array));
+                    if (field.isAnnotationPresent(Save.class)) {
+                        field.set(obj, field.getType().cast(array));
+                    }
                 }
             } else {
-                setValue(obj, field, value, serObject);
+                if (field.isAnnotationPresent(Save.class)) {
+                    setValue(obj, field, value, serObject);
+                }
             }
             start = end + 4;
         }
