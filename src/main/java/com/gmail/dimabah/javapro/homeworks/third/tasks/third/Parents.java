@@ -2,7 +2,7 @@ package com.gmail.dimabah.javapro.homeworks.third.tasks.third;
 
 public class Parents {
     private String motherName;
-    private String fatherName;
+    @Save private String fatherName;
 
     public Parents(String motherName, String fatherName) {
         this.motherName = motherName;

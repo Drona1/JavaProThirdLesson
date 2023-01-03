@@ -25,7 +25,7 @@ public class CustomDeserialization {
         String name;
         Field field;
         start = serObject.indexOf("\"", end + 1) + 1;
-        if (start == 0 || start >= serObject.length() - 1 || start > endLimit) {
+        if (start == 0 || start > endLimit) {
             return null;
         }
         end = serObject.indexOf("\":", start);
@@ -49,6 +49,9 @@ public class CustomDeserialization {
         }
         Object array = null;
         for (int index = 0; index < arrLen; index++) {
+            if (start>endLimit){
+                break;
+            }
             end = serObject.indexOf("\"", start);
             value = serObject.substring(start, end);
             if (arrLen > 1) {
@@ -146,7 +149,7 @@ public class CustomDeserialization {
     private void setValueInObjects(Object obj, Field field, String serObject)
             throws IllegalAccessException, NoSuchFieldException, NoSuchMethodException,
             InvocationTargetException, InstantiationException {
-        end = serObject.indexOf("{", end - 1);
+        end = serObject.indexOf("{", end - 2);
         endLimit = serObject.indexOf("}", end);
         if (field.getType().isArray()) {
             field.set(obj, null);
@@ -164,6 +167,6 @@ public class CustomDeserialization {
             setFieldValue(object, serObject, field1);
         }
         endLimit = serObject.length();
-        end = end + 4;
+        end = end + 3;
     }
 }

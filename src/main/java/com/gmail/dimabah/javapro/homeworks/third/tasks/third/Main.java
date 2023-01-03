@@ -9,14 +9,14 @@ public class Main {
     public static void main(String[] args){
         Person person = new Person("Vasiliy", 34, 61.05, 170, Gender.MALE, true, 'L',
                 new String[]{"box", "sport"}, new Parents[]
-                {new Parents("Anatoliy", "Tetyana"),
+                {new Parents("Tetyana", "Anatoliy"),
                         new Parents("unknown", "unknown")});
         Person person2 = new Person();
         try {
             System.out.println("Object: ");
             System.out.println(person);
             CustomSerialization customSer = new CustomSerialization();
-            String serObject = customSer.toString(person);
+            String serObject = customSer.toString(person, true);
             saveToFile("object.ser",serObject);
             System.out.println();
             System.out.println("Object as a string: ");
