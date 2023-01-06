@@ -14,11 +14,20 @@ public class CustomDeserialization {
             IllegalAccessException, InvocationTargetException, NoSuchMethodException,
             InstantiationException {
         Class<?> cls = obj.getClass();
+
         endLimit = serObject.length();
         Field field;
         while ((field = getField(cls, serObject)) != null) {
             setFieldValue(obj, serObject, field);
         }
+    }
+
+    public <T> T fromStringToObject(Class<T> cls, String serObject) throws NoSuchFieldException,
+            IllegalAccessException, InvocationTargetException, NoSuchMethodException,
+            InstantiationException {
+        T obj = cls.getConstructor().newInstance();
+        changeObject(obj, serObject);
+        return obj;
     }
 
     private Field getField(Class<?> cls, String serObject) throws NoSuchFieldException {
